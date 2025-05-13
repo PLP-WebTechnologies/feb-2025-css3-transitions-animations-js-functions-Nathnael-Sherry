@@ -1,25 +1,29 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const button = document.getElementById('animateButton');
+(function() {
+    const element = document.getElementById('targetElement');
+    let clickCount = 0;
 
-    // Retrieve user preference from localStorage
-    const savedColor = localStorage.getItem('buttonColor');
+    // Initialize from localStorage
+    const savedColor = localStorage.getItem('boxColor');
     if (savedColor) {
-        button.style.backgroundColor = savedColor;
+        element.style.backgroundColor = savedColor;
     }
 
-    // Function to handle button click
-    button.addEventListener('click', () => {
+    element.addEventListener('click', function() {
         // Trigger animation
-        button.classList.add('animate');
-
-        // Reset animation class to allow retriggering
+        this.classList.add('animate-pulse');
+        
+        // Remove animation class after completion
         setTimeout(() => {
-            button.classList.remove('animate');
-        }, 500);
+            this.classList.remove('animate-pulse');
+        }, 600);
 
-        // Change button color and store preference
-        const newColor = button.style.backgroundColor === 'lightblue' ? 'lightgreen' : 'lightblue';
-        button.style.backgroundColor = newColor;
-        localStorage.setItem('buttonColor', newColor);
+        // Color rotation logic
+        const colors = ['#4a90e2', '#50c878', '#ff6b6b', '#ffd700'];
+        const newColor = colors[clickCount % colors.length];
+        this.style.backgroundColor = newColor;
+        clickCount++;
+
+        // Save to localStorage
+        localStorage.setItem('boxColor', newColor);
     });
-});
+})();
